@@ -1,0 +1,932 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CT-X · ESPOL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0b1220; --navy:#0a1f4d; --navy2:#0f2a63;
+  --accent:#00a6e0; --accent-ink:#00334a;
+  --bg:#ffffff; --soft:#f3f6fa; --line:#e3e8ef;
+  --text:#0b1220; --muted:#4a5568;
+  --r:20px; --max:1240px;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font:16px/1.65 Inter,system-ui,sans-serif;color:var(--text);background:var(--bg);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,h5{font-family:"Space Grotesk",sans-serif;letter-spacing:-.025em;line-height:1.05;font-weight:700;text-wrap:balance}
+p{text-wrap:pretty}
+.nb{white-space:nowrap}
+:focus:not(:focus-visible){outline:none}
+a{color:inherit;text-decoration:none}
+img{display:block;width:100%;height:100%;object-fit:cover}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:6px}
+.wrap{width:100%;max-width:var(--max);margin:0 auto;padding:0 32px}
+.sec{padding:128px 0}
+.sec.tight{padding:88px 0}
+.soft{background:var(--soft)}
+.dark{background:var(--navy);color:#fff}
+.center{text-align:center}
+.center .lead{margin-left:auto;margin-right:auto}
+svg.i{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+/* ---------- tipografía ---------- */
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font:600 13px/1 Inter;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.eyebrow::before{content:"";width:28px;height:2px;background:currentColor}
+.center .eyebrow::after{content:"";width:28px;height:2px;background:currentColor}
+.h2{font-size:clamp(36px,5vw,64px);margin:20px 0 22px}
+.lead{font-size:19px;color:var(--muted);max-width:620px}
+.dark .lead{color:#b8c4dc}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:40px;margin-bottom:56px;flex-wrap:wrap}
+.sec-head .lead{margin:0}
+
+/* ---------- botones ---------- */
+.btn{display:inline-flex;align-items:center;gap:10px;height:52px;padding:0 26px;border-radius:99px;font-weight:600;font-size:15px;border:0;transition:background .2s,color .2s,box-shadow .2s;white-space:nowrap}
+.btn .i{transition:transform .2s}
+.btn:hover .i{transform:translateX(4px)}
+.btn-accent{background:var(--accent);color:#fff;box-shadow:0 10px 30px -10px #00a6e0aa}
+.btn-accent:hover{background:#0090c4}
+.btn-dark{background:var(--ink);color:#fff}
+.btn-dark:hover{background:var(--navy2)}
+.btn-ghost{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px #ffffff66}
+.btn-ghost:hover{background:#ffffff14}
+.link{display:inline-flex;align-items:center;gap:8px;font-weight:600;color:var(--accent)}
+.link:hover .i{transform:translateX(4px)}
+.link .i{transition:transform .2s}
+
+/* ---------- header ---------- */
+.util{background:var(--ink);color:#8fa0bd;font-size:12.5px}
+.util .wrap{display:flex;justify-content:flex-end;gap:22px;height:36px;align-items:center}
+.util a:hover{color:#fff}
+header.nav{position:sticky;top:0;z-index:50;background:#ffffffeb;backdrop-filter:saturate(1.6) blur(14px);border-bottom:1px solid var(--line)}
+header.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:76px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-mark{width:42px;height:42px;border-radius:11px;background:var(--navy);display:grid;place-items:center}
+.brand-mark svg{width:22px;height:22px}
+.brand-txt{font:700 21px/1 "Space Grotesk";color:var(--ink)}
+.brand-txt small{display:block;font:500 11px/1.3 Inter;color:var(--muted);letter-spacing:0;margin-top:3px}
+.menu{display:flex;gap:2px;align-items:center}
+.menu a{font-size:14.5px;font-weight:500;color:#334155;padding:10px 14px;border-radius:10px;position:relative;transition:color .2s}
+.menu a::after{content:"";position:absolute;left:14px;right:14px;bottom:4px;height:2px;background:var(--accent);transform:scaleX(0);transition:transform .3s var(--ease)}
+.menu a:hover{color:var(--ink)}
+.menu a.on{color:var(--ink);font-weight:600}
+.menu a.on::after,.menu a:hover::after{transform:scaleX(1)}
+.menu .btn{height:44px;margin-left:14px;color:#fff}
+.menu .btn::after{display:none}
+.burger{display:none;background:none;border:0;width:44px;height:44px;color:var(--ink)}
+.burger svg{width:26px;height:26px}
+
+/* ---------- páginas ---------- */
+.page{display:none}.page.on{display:block}
+
+/* ---------- hero inicio ---------- */
+.hero{position:relative;min-height:calc(100svh - 112px);display:flex;align-items:center;text-align:left;color:#fff;overflow:hidden;background:var(--ink)}
+.hero-bg{position:absolute;inset:0}
+.hero-bg img{transform:scale(1.15)}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#0b1220 0%,#0b1220e6 10%,#0b122000 42%),linear-gradient(90deg,#0b1220f2 0%,#0a1f4de0 42%,#0a1f4d66 75%,#0a1f4d33 100%)}
+.hero{padding-bottom:6vh}
+.hero .wrap{position:relative;z-index:2;padding-top:72px;padding-bottom:96px}
+.hero-in{max-width:760px}
+.hero .kick{display:inline-flex;align-items:center;gap:10px;font:600 13px/1 Inter;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:28px}
+.hero .kick::before{content:"";width:28px;height:2px;background:currentColor}
+.hero h1{font-size:clamp(34px,5.4vw,84px);line-height:.98;text-transform:uppercase;letter-spacing:-.035em}
+.hero h1 .ln{display:block;overflow:hidden;padding-bottom:.06em;white-space:nowrap}
+.hero h1 .ln>span{display:inline-block}
+.hero h1 .acc{color:var(--accent)}
+.hero p{font-size:19px;color:#d3dbea;max-width:600px;margin-top:28px}
+.hero .ctas{display:flex;gap:14px;margin-top:40px;flex-wrap:wrap}
+.scroll-cue{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:2;color:#ffffffaa;font-size:12px;letter-spacing:.2em;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:10px}
+.scroll-cue span{width:1px;height:42px;background:linear-gradient(#fff,transparent)}
+
+/* ---------- media que crece (Flanders) ---------- */
+.vid{background:radial-gradient(60% 40% at 50% 100%,#00a6e014,transparent 70%),var(--ink);color:#fff;padding-top:40px}
+.vid .lead{color:#b8c4dc;margin:0}
+.vid-head{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:end;margin-bottom:56px}
+.vid-frame{position:relative;aspect-ratio:16/8;border-radius:24px;overflow:hidden;box-shadow:0 0 0 1px #ffffff14,0 40px 100px -40px #00a6e055}
+.vid-frame::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#0b122099,#0b122022)}
+.vid-frame img{transition:transform 1.4s var(--ease)}
+.vid-frame:hover img{transform:scale(1.03)}
+.vplay{position:absolute;z-index:2;left:50%;top:50%;transform:translate(-50%,-50%);width:92px;height:92px;border-radius:50%;border:0;background:var(--accent);color:#fff;display:grid;place-items:center;transition:background .2s}
+.vplay:hover{background:#0090c4}
+.vplay svg{width:28px;height:28px;fill:currentColor;margin-left:4px}
+.vplay::before{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid var(--accent);animation:pulse 2.4s var(--ease) infinite}
+@keyframes pulse{from{transform:scale(1);opacity:.8}to{transform:scale(1.7);opacity:0}}
+.vdur{position:absolute;z-index:2;right:24px;bottom:22px;background:#0b1220b3;backdrop-filter:blur(6px);padding:6px 12px;border-radius:99px;font:600 13px Inter}
+@media (max-width:900px){.vid-head{grid-template-columns:1fr;gap:20px}.vid-frame{aspect-ratio:4/3}.vplay{width:72px;height:72px}}
+@media (prefers-reduced-motion:reduce){.vplay::before{animation:none}}
+.grow{height:200vh;position:relative;background:var(--bg)}
+.grow-stick{position:sticky;top:76px;height:calc(100vh - 76px);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.grow-media{position:relative;width:100%;height:100%;overflow:hidden;border-radius:32px;transform:scale(.72);will-change:transform}
+.no-motion .grow-media{transform:none;border-radius:0}
+.grow-media::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#0b1220cc,transparent 55%)}
+.grow-cap{position:absolute;left:0;right:0;bottom:9%;z-index:2;color:#fff;text-align:center;padding:0 24px}
+.grow-cap h3{font-size:clamp(28px,4vw,56px)}
+.grow-cap p{color:#d3dbea;margin-top:10px}
+.play{position:absolute;z-index:3;left:50%;top:44%;transform:translate(-50%,-50%);width:96px;height:96px;border-radius:50%;background:#fff;color:var(--navy);display:grid;place-items:center;border:0;box-shadow:0 20px 60px -10px #0008;transition:transform .3s var(--ease)}
+.play:hover{transform:translate(-50%,-50%) scale(1.06)}
+.play svg{width:30px;height:30px;fill:currentColor;stroke:none;margin-left:4px}
+
+/* ---------- intro split ---------- */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.split.rev>:first-child{order:2}
+.frame{position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:4/3.4}
+.frame img{transition:transform 1.2s var(--ease)}
+.frame:hover img{transform:scale(1.04)}
+.badge{position:absolute;left:24px;bottom:24px;background:#fff;border-radius:16px;padding:18px 22px;box-shadow:0 20px 40px -18px #0b122066;display:flex;gap:14px;align-items:center}
+.badge b{font:700 34px/1 "Space Grotesk";color:var(--navy)}
+.badge span{font-size:13px;color:var(--muted);line-height:1.35}
+.checks{list-style:none;margin:30px 0 36px;display:grid;gap:14px}
+.checks li{display:flex;gap:12px;align-items:flex-start;color:#1f2a3d}
+.checks .i{color:var(--accent);margin-top:3px}
+
+/* ---------- 4 áreas ---------- */
+.areas{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#ffffff1f;border-radius:var(--r);overflow:hidden;border:1px solid #ffffff1f}
+.area{background:var(--navy);padding:40px 32px 36px;display:flex;flex-direction:column;gap:16px;min-height:340px;transition:background .3s}
+.area:hover{background:var(--navy2)}
+.area .num{font:600 13px Inter;color:var(--accent);letter-spacing:.1em}
+.area .ico{width:56px;height:56px;border-radius:14px;background:#00a6e01f;color:var(--accent);display:grid;place-items:center}
+.area .ico svg{width:26px;height:26px}
+.area h4{font-size:24px}
+.area p{color:#b8c4dc;font-size:15px;flex:1}
+.area .link{color:#fff}
+
+/* ---------- sectores lista (Flanders) ---------- */
+.sectors{display:grid;grid-template-columns:5fr 6fr;gap:72px;align-items:center}
+.slist{border-top:1px solid var(--line)}
+.slist button{display:flex;width:100%;align-items:center;justify-content:space-between;gap:20px;background:none;border:0;border-bottom:1px solid var(--line);padding:22px 0;text-align:left;font:600 clamp(19px,1.9vw,24px)/1.2 "Space Grotesk";color:#94a3b8;transition:color .25s,padding .3s var(--ease)}
+.slist button .i{opacity:0;transform:translateX(-8px);transition:.3s var(--ease);color:var(--accent);width:24px;height:24px}
+.slist button.on,.slist button:hover{color:var(--ink);padding-left:10px}
+.slist button.on .i{opacity:1;transform:none}
+.sview{position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:5/4.6;background:var(--ink)}
+.sview img{position:absolute;inset:0;opacity:0;transform:scale(1.06);transition:opacity .6s,transform 1.2s var(--ease)}
+.sview img.on{opacity:1;transform:scale(1)}
+.sview::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#0b1220e6 0%,transparent 60%)}
+.sview .cap{position:absolute;z-index:2;left:36px;right:36px;bottom:34px;color:#fff}
+.sview .cap small{font:600 12px Inter;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.sview .cap p{font:600 22px/1.3 "Space Grotesk";margin-top:10px}
+
+/* ---------- cards con foto ---------- */
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.pcard{display:flex;flex-direction:column;border-radius:var(--r);overflow:hidden;background:#fff;border:1px solid var(--line);transition:box-shadow .35s var(--ease),border-color .35s}
+.pcard:hover{box-shadow:0 30px 60px -30px #0b122059;border-color:transparent}
+.pcard .ph{aspect-ratio:16/11;overflow:hidden;position:relative}
+.pcard .ph img{transition:transform .9s var(--ease)}
+.pcard:hover .ph img{transform:scale(1.06)}
+.pcard .tag{position:absolute;left:18px;top:18px;background:#fff;color:var(--navy);font:600 12px Inter;padding:7px 12px;border-radius:99px}
+.pcard .body{padding:28px;display:flex;flex-direction:column;gap:12px;flex:1}
+.pcard h4{font-size:22px;line-height:1.2}
+.pcard p{color:var(--muted);font-size:15px;flex:1}
+.pcard .meta{font:600 12px Inter;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+
+/* ---------- cifras ---------- */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stat{padding:44px 12px;text-align:center}
+.stat+.stat{border-left:1px solid var(--line)}
+.stat b{display:block;font:700 clamp(44px,5vw,68px)/1 "Space Grotesk";color:var(--navy);letter-spacing:-.04em}
+.stat span{display:block;margin-top:10px;color:var(--muted);font-size:15px}
+
+/* ---------- noticias ---------- */
+.ncard .ph{aspect-ratio:4/3}
+.ncard .date{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px}
+.ncard .date .i{width:16px;height:16px}
+.ncard h4{font-size:19px}
+.xnote{display:flex;align-items:center;gap:14px;margin-top:36px;padding:18px 22px;border-radius:14px;background:var(--soft);color:var(--muted);font-size:14.5px}
+.xnote .x{width:38px;height:38px;border-radius:10px;background:var(--ink);color:#fff;display:grid;place-items:center;flex:none;font:700 17px Inter}
+
+/* ---------- CTA ---------- */
+.cta{position:relative;border-radius:28px;overflow:hidden;color:#fff;background:var(--navy)}
+.cta-bg{position:absolute;inset:0}
+.cta::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#0a1f4df5 0%,#0a1f4dd9 45%,#0a1f4d40 100%)}
+.cta-in{position:relative;z-index:2;padding:96px 80px;max-width:720px}
+.cta h2{font-size:clamp(36px,4.6vw,60px)}
+.cta p{color:#c7d2e6;font-size:18px;margin:22px 0 36px;max-width:540px}
+.cta .row{display:flex;gap:28px;align-items:center;flex-wrap:wrap}
+.cta .phone{display:flex;gap:10px;align-items:center;font:600 20px "Space Grotesk"}
+
+/* ---------- hero interno ---------- */
+.phero{position:relative;color:#fff;overflow:hidden;background:var(--ink);min-height:540px;display:flex;align-items:flex-end}
+.phero img{position:absolute;inset:0}
+.phero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#0b1220f0 0%,#0a1f4dcc 50%,#0a1f4d55 100%)}
+.phero .wrap{position:relative;z-index:2;padding-top:120px;padding-bottom:88px}
+.crumb{font-size:13px;color:#9fb0cc;margin-bottom:22px;display:flex;gap:8px;align-items:center}
+.crumb .i{width:14px;height:14px}
+.phero h1{font-size:clamp(44px,7vw,96px);max-width:900px;text-transform:uppercase;letter-spacing:-.035em;line-height:.95}
+.phero p{font-size:19px;color:#c7d2e6;max-width:620px;margin-top:26px}
+
+/* ---------- acordeón ---------- */
+.acc{border-top:1px solid var(--line)}
+.acc details{border-bottom:1px solid var(--line)}
+.acc summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:26px 0;font:600 20px/1.3 "Space Grotesk"}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary .pm{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;flex:none;transition:.3s var(--ease);color:var(--navy)}
+.acc details[open] .pm{background:var(--accent);border-color:var(--accent);color:#fff;transform:rotate(45deg)}
+.acc details p{color:var(--muted);padding:0 60px 26px 0;max-width:720px}
+
+/* ---------- tabs / equipo ---------- */
+.tabs{display:inline-flex;gap:6px;padding:6px;background:var(--soft);border-radius:99px;flex-wrap:wrap;margin-bottom:56px}
+.tabs button{border:0;background:transparent;height:46px;padding:0 22px;border-radius:99px;font-weight:600;font-size:14.5px;color:var(--muted);transition:.25s}
+.tabs button.on{background:var(--ink);color:#fff}
+.tabs button:hover:not(.on){color:var(--ink)}
+.person{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .3s}
+.person:hover{box-shadow:0 24px 50px -28px #0b122059}
+.person .av{aspect-ratio:1/1;background:linear-gradient(160deg,#e6edf7,#cdd8ea);display:grid;place-items:center;color:#9aabc6}
+.person .av{position:relative;overflow:hidden}.person .av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.person .av svg{width:38%;height:38%;stroke-width:1.2}
+.person .b{padding:22px 22px 24px;display:flex;flex-direction:column;gap:8px;flex:1}
+.person h5{font-size:19px}
+.person p{font-size:14px;color:var(--muted);flex:1}
+
+/* ---------- casos ---------- */
+.case-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:48px}
+.case-tabs button{text-align:left;background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px 24px;display:flex;flex-direction:column;gap:6px;transition:.25s}
+.case-tabs button small{font:600 12px Inter;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.case-tabs button span{font:600 17px/1.3 "Space Grotesk";color:var(--ink)}
+.case-tabs button.on{background:var(--ink);border-color:var(--ink)}
+.case-tabs button.on span{color:#fff}
+.dsr{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+.dsr>div{padding:36px 32px;border-radius:var(--r);background:var(--soft)}
+.dsr>div:last-child{background:var(--navy);color:#fff}
+.dsr>div:last-child p{color:#c7d2e6}
+.dsr .ico{width:48px;height:48px;border-radius:12px;background:#fff;color:var(--accent);display:grid;place-items:center;margin-bottom:22px}
+.dsr>div:last-child .ico{background:#00a6e026}
+.dsr h5{font-size:22px;margin-bottom:12px}
+.dsr p{color:var(--muted);font-size:15px}
+.logos{display:flex;justify-content:center;align-items:center;gap:64px;flex-wrap:wrap}
+.logos span{font:700 22px "Space Grotesk";color:#94a3b8;letter-spacing:-.02em;transition:color .2s}
+.logos span:hover{color:var(--navy)}
+
+/* ---------- misión / valores / historia ---------- */
+.mv{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.mv>div{border-radius:var(--r);padding:56px 48px;position:relative;overflow:hidden}
+.mv>div:first-child{background:var(--navy);color:#fff}
+.mv>div:last-child{background:var(--accent);color:#fff}
+.mv small{font:600 12px Inter;letter-spacing:.16em;text-transform:uppercase;opacity:.75}
+.mv h3{font-size:40px;margin:14px 0 18px}
+.mv p{opacity:.92;font-size:17px}
+.vals{display:grid;grid-template-columns:repeat(5,1fr);gap:20px}
+.val{padding:32px 26px;border-radius:var(--r);background:#fff;border:1px solid var(--line);transition:.3s}
+.val:hover{border-color:var(--accent);box-shadow:0 20px 40px -26px #00a6e0aa}
+.val .ico{width:48px;height:48px;border-radius:12px;background:#00a6e014;color:var(--accent);display:grid;place-items:center;margin-bottom:22px}
+.val h5{font-size:19px;margin-bottom:10px}
+.val p{font-size:14.5px;color:var(--muted)}
+.tl{position:relative;max-width:900px;margin:0 auto}
+.tl::before{content:"";position:absolute;left:50%;top:8px;bottom:8px;width:2px;background:var(--line);transform:translateX(-50%)}
+.tli{display:grid;grid-template-columns:1fr 1fr;gap:80px;position:relative;padding-bottom:56px}
+.tli::before{content:"";position:absolute;left:50%;top:10px;width:16px;height:16px;border-radius:50%;background:#fff;border:3px solid var(--accent);transform:translateX(-50%)}
+.tli .yr{text-align:right;font:700 48px/1 "Space Grotesk";color:var(--navy)}
+.tli:nth-child(even) .yr{order:2;text-align:left}
+.tli h5{font-size:22px;margin-bottom:8px}
+.tli p{color:var(--muted)}
+
+/* ---------- eventos ---------- */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:40px}
+.filters button{height:44px;padding:0 20px;border-radius:99px;border:1px solid var(--line);background:#fff;font-weight:600;font-size:14px;color:var(--muted);transition:.2s}
+.filters button.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.events{border-top:1px solid var(--line)}
+.ev{display:grid;grid-template-columns:110px 1fr auto;gap:36px;align-items:center;padding:30px 0;border-bottom:1px solid var(--line);transition:padding .3s var(--ease)}
+.ev:hover{padding-left:12px}
+.ev .d{text-align:center}
+.ev .d b{display:block;font:700 34px/1 "Space Grotesk";color:var(--navy)}
+.ev .d span{font-size:13px;color:var(--muted);letter-spacing:.1em}
+.ev h5{font-size:21px;margin-bottom:6px}
+.ev p{color:var(--muted);font-size:15px}
+.pill{display:inline-flex;align-items:center;height:32px;padding:0 14px;border-radius:99px;font:600 12.5px Inter;background:var(--soft);color:var(--navy)}
+.pill.up{background:#00a6e01a;color:#007aa6}
+
+/* ---------- contacto ---------- */
+.contact{display:grid;grid-template-columns:5fr 7fr;gap:72px;align-items:start}
+.cinfo{display:grid;gap:26px;margin-top:40px}
+.cinfo div{display:flex;gap:16px;align-items:flex-start}
+.cinfo .ico{width:48px;height:48px;border-radius:12px;background:var(--soft);color:var(--accent);display:grid;place-items:center;flex:none}
+.cinfo b{display:block;font:600 17px "Space Grotesk"}
+.cinfo span{color:var(--muted);font-size:15px}
+.form{background:#fff;border:1px solid var(--line);border-radius:24px;padding:44px;display:grid;grid-template-columns:1fr 1fr;gap:20px;box-shadow:0 40px 80px -50px #0b122066}
+.form label{display:grid;gap:8px;font-size:13.5px;font-weight:600;color:#1f2a3d}
+.form .full{grid-column:1/-1}
+.form input,.form select,.form textarea{height:52px;border:1px solid var(--line);border-radius:12px;padding:0 16px;font:15px Inter;color:var(--ink);background:var(--soft);transition:border-color .2s,background .2s}
+.form textarea{height:150px;padding:14px 16px;resize:vertical}
+.form input:focus,.form select:focus,.form textarea:focus{outline:none;border-color:var(--accent);background:#fff}
+.form .btn{justify-content:center}
+
+/* ---------- footer ---------- */
+footer{background:var(--ink);color:#8fa0bd;padding:96px 0 36px}
+.fgrid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px}
+footer .brand-txt{color:#fff}
+footer h6{font:600 14px Inter;color:#fff;margin-bottom:18px}
+footer ul{list-style:none;display:grid;gap:10px;font-size:14.5px}
+footer a:hover{color:#fff}
+.fbottom{margin-top:72px;padding-top:28px;border-top:1px solid #1e2a40;display:flex;justify-content:space-between;gap:20px;font-size:13px;flex-wrap:wrap}
+.social{display:flex;gap:10px;margin-top:26px}
+.social a{width:42px;height:42px;border-radius:10px;border:1px solid #1e2a40;display:grid;place-items:center;transition:.2s}
+.social a:hover{background:#ffffff10;color:#fff}
+
+/* ---------- etiquetas de pieza ---------- */
+.pz{position:absolute;z-index:30;top:16px;right:16px;display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:99px;background:#fff7d6;color:#7a5b00;font:600 11.5px Inter;border:1px solid #f3dc8a;pointer-events:none}
+.has-pz{position:relative}
+body.hide-pz .pz{display:none}
+.pz-toggle{position:fixed;right:20px;bottom:20px;z-index:60;height:46px;padding:0 18px;border-radius:99px;border:0;background:var(--ink);color:#fff;font-weight:600;font-size:13.5px;box-shadow:0 14px 30px -10px #0008;display:flex;align-items:center;gap:8px}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(32px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.rv.in{opacity:1;transform:none}
+.no-motion .rv{opacity:1!important;transform:none!important;transition:none}
+
+@media (max-width:1100px){
+  .areas{grid-template-columns:1fr 1fr}
+  .vals{grid-template-columns:repeat(3,1fr)}
+  .grid4{grid-template-columns:1fr 1fr}
+}
+@media (max-width:900px){
+  .wrap{padding:0 20px}
+  .sec{padding:88px 0}
+  .menu{display:none;position:absolute;top:76px;left:0;right:0;flex-direction:column;align-items:stretch;background:#fff;padding:12px 20px 20px;border-bottom:1px solid var(--line);box-shadow:0 20px 40px -20px #0003}
+  .menu.open{display:flex}
+  .menu a{padding:14px 4px}
+  .menu .btn{margin:10px 0 0;justify-content:center}
+  .burger{display:grid;place-items:center}
+  .split,.sectors,.contact,.mv,.dsr,.case-tabs,.grid3{grid-template-columns:1fr;gap:40px}
+  .split.rev>:first-child{order:0}
+  .stats{grid-template-columns:1fr 1fr}
+  .stat:nth-child(3){border-left:0}
+  .stat:nth-child(n+3){border-top:1px solid var(--line)}
+  .vals{grid-template-columns:1fr 1fr}
+  .cta-in{padding:64px 28px}
+  .cta::after{background:linear-gradient(180deg,#0a1f4df0,#0a1f4dcc)}
+  .ev{grid-template-columns:72px 1fr;gap:20px}
+  .ev .pill{grid-column:2;justify-self:start}
+  .tl::before,.tli::before{left:8px}
+  .tli{grid-template-columns:1fr;gap:10px;padding-left:40px}
+  .tli .yr,.tli:nth-child(even) .yr{text-align:left;order:0}
+  .form{grid-template-columns:1fr;padding:28px}
+  .fgrid{grid-template-columns:1fr 1fr}
+  .mv>div{padding:40px 28px}
+  .phero{min-height:460px}
+  .pz{top:10px;right:10px}
+}
+@media (max-width:560px){
+  .areas,.grid4,.vals{grid-template-columns:1fr}
+  .fgrid{grid-template-columns:1fr}
+  .hero p{font-size:17px}
+}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none}}
+.menu a{white-space:nowrap}
+@media (max-width:1120px){
+  .menu{display:none;position:absolute;top:76px;left:0;right:0;flex-direction:column;align-items:stretch;background:#fff;padding:12px 20px 20px;border-bottom:1px solid var(--line);box-shadow:0 20px 40px -20px #0003}
+  .menu.open{display:flex}
+  .menu a{padding:14px 4px}
+  .menu .btn{margin:10px 0 0;justify-content:center}
+  .burger{display:grid;place-items:center}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+  <symbol id="chev" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="brain" viewBox="0 0 24 24"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M12 5v13"/></symbol>
+  <symbol id="hand" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+  <symbol id="db" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></symbol>
+  <symbol id="bolt" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></symbol>
+  <symbol id="target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+  <symbol id="cog" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
+  <symbol id="trend" viewBox="0 0 24 24"><path d="m22 7-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/></symbol>
+  <symbol id="users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
+  <symbol id="award" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.48 12.89 17 22l-5-3-5 3 1.52-9.11"/></symbol>
+  <symbol id="layers" viewBox="0 0 24 24"><path d="m12 2 10 5-10 5L2 7l10-5z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></symbol>
+  <symbol id="phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></symbol>
+  <symbol id="pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></symbol>
+  <symbol id="eye" viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+</svg>
+
+<div class="util"><div class="wrap"><a href="#">Ir a ESPOL</a><a href="#contacto">Contáctanos</a><a href="#">ES · EN</a></div></div>
+<header class="nav">
+  <div class="wrap">
+    <a href="#inicio" class="brand" aria-label="CT-X inicio">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#00a6e0" stroke-width="3" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></span>
+      <span class="brand-txt">CT-X<small>Centro de Tecnologías · ESPOL</small></span>
+    </a>
+    <nav class="menu" id="menu">
+      <a href="#inicio">Inicio</a>
+      <a href="#sectores">Sectores</a>
+      <a href="#expertise">Expertise</a>
+      <a href="#casos">Casos de éxito</a>
+      <a href="#acerca">Acerca de</a>
+      <a href="#eventos">Eventos y noticias</a>
+      <a href="#contacto" class="btn btn-accent">Contáctanos</a>
+    </nav>
+    <button class="burger" aria-label="Abrir menú" onclick="document.getElementById('menu').classList.toggle('open')"><svg class="i"><use href="#menu"/></svg></button>
+  </div>
+</header>
+
+<!-- ================= INICIO ================= -->
+<main class="page" id="p-inicio">
+  <section class="hero has-pz">
+    <span class="pz">Pieza · Slider back gradiente</span>
+    <div class="hero-bg"><img id="heroImg" data-u="photo-1581093577421-f561a654a353" alt="Investigador trabajando en un laboratorio de tecnología"></div>
+    <div class="wrap"><div class="hero-in">
+      <span class="kick hero-sub">CT-X · ESPOL</span>
+      <h1 id="heroTitle">
+        <span class="ln"><span>Transformamos</span></span>
+        <span class="ln"><span>el conocimiento</span></span>
+        <span class="ln"><span class="acc">en competitividad</span></span>
+      </h1>
+      <p class="hero-sub">El epicentro del desarrollo tecnológico en ESPOL, donde científicos, ingenieros y técnicos impulsan la investigación y desarrollo para transformar el conocimiento en productos y servicios digitales.</p>
+      <div class="ctas hero-sub">
+        <a href="#contacto" class="btn btn-accent">Cuéntanos tu reto <svg class="i"><use href="#arrow"/></svg></a>
+        <a href="#casos" class="btn btn-ghost">Ver historias de éxito</a>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="sec vid has-pz">
+    <span class="pz">Pieza · Video “CT-X en 1 minuto”</span>
+    <div class="wrap">
+      <div class="vid-head rv">
+        <div><span class="eyebrow">CT-X en 1 minuto</span><h2 class="h2" style="margin-bottom:0">De la investigación al producto</h2></div>
+        <p class="lead">Cómo transformamos conocimiento computacional en tecnología para la industria y la sociedad.</p>
+      </div>
+      <div class="vid-frame rv">
+        <img data-u="photo-1599726159910-f4378e03f9bb" alt="Laboratorio de investigación">
+        <button class="vplay" aria-label="Reproducir video"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></button>
+        <span class="vdur">01:00</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec has-pz">
+    <span class="pz">Pieza · Information card IS – Presentación</span>
+    <div class="wrap split">
+      <div class="frame rv"><img data-u="photo-1517048676732-d65bc937f952" alt="Equipo de investigadores en reunión">
+        <div class="badge"><b>3</b><span>centros de ESPOL<br>unidos en uno</span></div></div>
+      <div class="rv">
+        <span class="eyebrow">Quiénes somos</span>
+        <h2 class="h2">Ciencia de ESPOL convertida en tecnología para el Ecuador</h2>
+        <p class="lead">CT-X nace de la fusión del CTI, el CIDIS y el CTD para consolidar en un solo lugar una década de fortalezas en inteligencia artificial, visión por computador, robótica e ingeniería.</p>
+        <ul class="checks">
+          <li><svg class="i"><use href="#check"/></svg>Co-investigación entre áreas distintas</li>
+          <li><svg class="i"><use href="#check"/></svg>Proyectos aplicados con empresas e instituciones</li>
+          <li><svg class="i"><use href="#check"/></svg>Respaldo científico de más de 350 publicaciones</li>
+        </ul>
+        <a href="#acerca" class="btn btn-dark">Conoce el centro <svg class="i"><use href="#arrow"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec dark has-pz">
+    <span class="pz">Pieza · Panel informativo – Capacidades</span>
+    <div class="wrap">
+      <div class="sec-head rv">
+        <div><span class="eyebrow">Expertise</span><h2 class="h2" style="margin-bottom:0">Cuatro fortalezas<br>que se cruzan en la X</h2></div>
+      </div>
+      <div class="areas" id="homeAreas"></div>
+    </div>
+  </section>
+
+  <section class="sec has-pz">
+    <span class="pz">Pieza · Focus card – Sectores</span>
+    <div class="wrap sectors">
+      <div>
+        <span class="eyebrow rv">Sectores donde generamos impacto</span>
+        <h2 class="h2 rv">Tecnología a la medida de cada industria</h2>
+        <div class="slist" id="slist"></div>
+        <a href="#sectores" class="link" style="margin-top:32px">Ver los 10 sectores <svg class="i"><use href="#arrow"/></svg></a>
+      </div>
+      <div class="sview rv" id="sview"><div class="cap"><small id="sKicker"></small><p id="sText"></p></div></div>
+    </div>
+  </section>
+
+  <section class="sec soft has-pz">
+    <span class="pz">Pieza · Information card – Historias de éxito</span>
+    <div class="wrap">
+      <div class="sec-head rv">
+        <div><span class="eyebrow">Casos de éxito</span><h2 class="h2" style="margin-bottom:0">Innovación comprobada</h2></div>
+        <a href="#casos" class="link">Todos los casos <svg class="i"><use href="#arrow"/></svg></a>
+      </div>
+      <div class="grid3" id="homeCases"></div>
+    </div>
+  </section>
+
+  <section class="sec tight has-pz">
+    <span class="pz">Pieza · Cifras</span>
+    <div class="wrap"><div class="stats rv">
+      <div class="stat"><b data-count="45">0</b><span>Investigadores</span></div>
+      <div class="stat"><b data-count="356">0</b><span>Publicaciones</span></div>
+      <div class="stat"><b data-count="5396">0</b><span>Citaciones</span></div>
+      <div class="stat"><b data-count="10">0</b><span>Sectores de impacto</span></div>
+    </div></div>
+  </section>
+
+  <section class="sec has-pz" style="padding-top:40px">
+    <span class="pz">Pieza · View news</span>
+    <div class="wrap">
+      <div class="sec-head rv">
+        <div><span class="eyebrow">Eventos y noticias</span><h2 class="h2" style="margin-bottom:0">Lo que está pasando</h2></div>
+        <a href="#eventos" class="link">Ver todo <svg class="i"><use href="#arrow"/></svg></a>
+      </div>
+      <div class="grid4" id="homeNews"></div>
+    </div>
+  </section>
+
+  <section class="sec has-pz" style="padding-top:0"><span class="pz">Pieza · Contáctenos</span><div class="wrap" data-cta="photo-1542744173-8e7e53415bb0"></div></section>
+</main>
+
+<!-- ================= SECTORES ================= -->
+<main class="page" id="p-sectores">
+  <section class="phero has-pz"><span class="pz">Pieza · Slider imagen estático</span>
+    <img data-u="photo-1656407410275-e63e689bcd90" alt="Dron sobre un campo agrícola">
+    <div class="wrap"><div class="crumb">Inicio <svg class="i"><use href="#chev"/></svg> Sectores</div>
+      <h1 class="rv">Sectores donde generamos impacto</h1>
+      <p class="rv">Desarrollamos tecnologías adaptadas a cada sector con inteligencia artificial, automatización, sensores y análisis de datos.</p></div>
+  </section>
+  <section class="sec has-pz"><span class="pz">Pieza · Cards – Listado de sectores</span>
+    <div class="wrap"><div class="grid3" id="allSectors"></div></div>
+  </section>
+  <section class="sec soft has-pz" id="sectorDetail"><span class="pz">Pieza · Information card IS + Acordeón</span>
+    <div class="wrap split">
+      <div>
+        <span class="eyebrow">Detalle del sector</span>
+        <h2 class="h2" id="sdTitle"></h2>
+        <p class="lead" id="sdLead"></p>
+        <div class="acc" id="sdAcc" style="margin-top:36px"></div>
+      </div>
+      <div>
+        <div class="frame" style="aspect-ratio:4/4.4"><img id="sdImg" alt=""></div>
+        <div style="margin-top:24px;padding:28px;border-radius:var(--r);background:#fff;border:1px solid var(--line)">
+          <span class="eyebrow">Proyecto destacado</span>
+          <h4 id="sdProj" style="font-size:22px;margin-top:14px;line-height:1.25"></h4>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="sec has-pz"><span class="pz">Pieza · Contáctenos</span><div class="wrap" data-cta="photo-1573164574572-cb89e39749b4"></div></section>
+</main>
+
+<!-- ================= EXPERTISE ================= -->
+<main class="page" id="p-expertise">
+  <section class="phero has-pz"><span class="pz">Pieza · Slider back gradiente</span>
+    <img data-u="photo-1562408590-e32931084e23" alt="Placa de circuito electrónico">
+    <div class="wrap"><div class="crumb">Inicio <svg class="i"><use href="#chev"/></svg> Expertise</div>
+      <h1 class="rv">Cuatro fortalezas que se cruzan en la X</h1>
+      <p class="rv">Combinamos disciplinas científicas y tecnológicas para desarrollar soluciones integrales.</p></div>
+  </section>
+  <section class="sec has-pz"><span class="pz">Pieza · Information card IS + Card equipo estilo 3</span>
+    <div class="wrap">
+      <div class="center"><div class="tabs" id="areaTabs"></div></div>
+      <div class="split" style="margin-bottom:96px">
+        <div class="frame"><img id="aImg" alt=""></div>
+        <div><span class="eyebrow" id="aNum"></span><h2 class="h2" id="aTitle"></h2><p class="lead" id="aDesc"></p></div>
+      </div>
+      <div class="sec-head" style="margin-bottom:36px"><h3 style="font-size:32px">Expertos</h3><span style="color:var(--muted)">Perfiles completos en i-research</span></div>
+      <div class="grid4" id="team"></div>
+    </div>
+  </section>
+  <section class="sec soft has-pz"><span class="pz">Pieza · Enlaces color centro</span>
+    <div class="wrap center rv">
+      <span class="eyebrow">Publicaciones y proyectos</span>
+      <h2 class="h2">Toda nuestra producción científica, en <span class="nb">i-research</span></h2>
+      <div style="display:flex;gap:14px;justify-content:center;margin-top:36px;flex-wrap:wrap">
+        <a class="btn btn-dark" href="https://i-research.espol.edu.ec/centro/cti" target="_blank" rel="noopener"><svg class="i"><use href="#link"/></svg>i-research CTI</a>
+        <a class="btn btn-dark" href="https://i-research.espol.edu.ec/centro/cidis" target="_blank" rel="noopener"><svg class="i"><use href="#link"/></svg>i-research CIDIS</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ================= CASOS ================= -->
+<main class="page" id="p-casos">
+  <section class="phero has-pz"><span class="pz">Pieza · Slider imagen estático</span>
+    <img data-u="photo-1717386255773-1e3037c81788" alt="Línea de producción automatizada">
+    <div class="wrap"><div class="crumb">Inicio <svg class="i"><use href="#chev"/></svg> Casos de éxito</div>
+      <h1 class="rv">Innovación comprobada</h1>
+      <p class="rv">Proyectos estratégicos y soluciones escalables implementadas con nuestros socios corporativos e institucionales.</p></div>
+  </section>
+  <section class="sec has-pz"><span class="pz">Pieza · Focus card + Information card IS (Desafío · Solución · Resultado)</span>
+    <div class="wrap">
+      <div class="case-tabs" id="caseTabs"></div>
+      <div class="frame" style="aspect-ratio:21/9"><img id="caseImg" alt=""></div>
+      <div class="dsr" id="caseDSR"></div>
+    </div>
+  </section>
+  <section class="sec tight soft has-pz"><span class="pz">Pieza · Patrocinio logos</span>
+    <div class="wrap center"><span class="eyebrow">Organizaciones participantes</span>
+      <div class="logos" style="margin-top:40px"><span>Envases Litoral</span><span>Agrosoft</span><span>Technology Equinoccial</span><span>GAD Durán</span></div></div>
+  </section>
+  <section class="sec has-pz"><span class="pz">Pieza · Contáctenos</span><div class="wrap" data-cta="photo-1517048676732-d65bc937f952"></div></section>
+</main>
+
+<!-- ================= ACERCA ================= -->
+<main class="page" id="p-acerca">
+  <section class="phero has-pz"><span class="pz">Pieza · Slider imagen estático</span>
+    <img data-u="photo-1487958449943-2429e8be8625" alt="Edificio moderno">
+    <div class="wrap"><div class="crumb">Inicio <svg class="i"><use href="#chev"/></svg> Acerca de</div>
+      <h1 class="rv">Un reto, mil formas de resolverlo.</h1>
+      <p class="rv">El centro donde los datos, la ingeniería y la ciencia de ESPOL se cruzan para resolver retos reales de la industria y la sociedad del Ecuador.</p></div>
+  </section>
+  <section class="sec has-pz"><span class="pz">Pieza · Information card IS – Quiénes somos</span>
+    <div class="wrap split rev">
+      <div class="frame rv"><img data-u="photo-1522202176988-66273c2fd55f" alt="Investigadores colaborando"></div>
+      <div class="rv"><span class="eyebrow">Quiénes somos</span>
+        <h2 class="h2">El centro de tecnologías digitales de ESPOL</h2>
+        <p class="lead">Nacemos de la fusión del CTI, el CIDIS y el CTD. La X en nuestro nombre representa el amplio rango de campos donde el conocimiento computacional hace la diferencia, reflejando la capacidad única de ESPOL de concentrar expertos y laboratorios en diversas áreas de la ciencia para atacar problemas de alto impacto industrial en un solo sitio.</p>
+        <p class="lead" style="margin-top:16px">Vamos más allá del ruido y las tendencias tecnológicas: nos enfocamos en el análisis crítico, el diseño, la ingeniería y los resultados.</p>
+        <a href="#contacto" class="btn btn-dark" style="margin-top:32px">Colabora con el centro <svg class="i"><use href="#arrow"/></svg></a></div>
+    </div>
+  </section>
+  <section class="sec soft has-pz"><span class="pz">Pieza · Objective card fondo color – Misión y visión</span>
+    <div class="wrap">
+      <div class="center rv" style="margin-bottom:56px"><span class="eyebrow">Nuestro propósito</span><h2 class="h2">Convertir el conocimiento de ESPOL en oportunidades para el Ecuador</h2></div>
+      <div class="mv">
+        <div class="rv"><small>Misión</small><h3>Del cálculo al impacto</h3><p>Transformar el conocimiento computacional de ESPOL en tecnologías para el desarrollo económico del Ecuador, en la intersección del procesamiento de datos, la ingeniería y el expertise científico.</p></div>
+        <div class="rv"><small>Visión</small><h3>Catalizador del litoral</h3><p>Ser el espacio de co-investigación de referencia que acorta la brecha entre el resultado científico y su aplicación práctica en la industria.</p></div>
+      </div>
+    </div>
+  </section>
+  <section class="sec has-pz"><span class="pz">Pieza · Cards – Valores</span>
+    <div class="wrap"><div class="center rv" style="margin-bottom:56px"><span class="eyebrow">Nuestros valores</span><h2 class="h2">Lo que nos mueve</h2></div>
+      <div class="vals" id="vals"></div></div>
+  </section>
+  <section class="sec soft has-pz"><span class="pz">Pieza · Historia modelo 1</span>
+    <div class="wrap"><div class="center rv" style="margin-bottom:72px"><span class="eyebrow">Historia</span><h2 class="h2">De tres centros a una X</h2></div>
+      <div class="tl">
+        <div class="tli rv"><div class="yr">1997</div><div><h5>CTI</h5><p>Centro de Tecnologías de Información.</p></div></div>
+        <div class="tli rv"><div class="yr">2008</div><div><h5>CIDIS</h5><p>Centro de Investigación, Desarrollo e Innovación de Sistemas Computacionales.</p></div></div>
+        <div class="tli rv"><div class="yr">20XX</div><div><h5>CTD</h5><p>Centro para la Transformación Digital Industrial.</p></div></div>
+        <div class="tli rv"><div class="yr">2027</div><div><h5>CT-X</h5><p>Centro de Tecnologías Digitales.</p></div></div>
+      </div></div>
+  </section>
+</main>
+
+<!-- ================= EVENTOS ================= -->
+<main class="page" id="p-eventos">
+  <section class="phero has-pz"><span class="pz">Pieza · Slider imagen estático</span>
+    <img data-u="photo-1540575467063-178a50c2df87" alt="Público en una conferencia">
+    <div class="wrap"><div class="crumb">Inicio <svg class="i"><use href="#chev"/></svg> Eventos y noticias</div>
+      <h1 class="rv">Actualidad del centro</h1>
+      <p class="rv">Conferencias, charlas, visitas y presentaciones de nuestros investigadores.</p></div>
+  </section>
+  <section class="sec has-pz"><span class="pz">Pieza · View news (alimentado desde X)</span>
+    <div class="wrap">
+      <div class="sec-head"><div><span class="eyebrow">Actualidad</span><h2 class="h2" style="margin-bottom:0">Noticias</h2></div></div>
+      <div class="grid4" id="evNews"></div>
+      <div class="xnote"><span class="x">𝕏</span>Las noticias se replicarían automáticamente desde X para actualizar en un solo lugar. Pendiente de confirmar con el director.</div></div>
+  </section>
+  <section class="sec soft has-pz"><span class="pz">Pieza · Noticias/Eventos – Próximas actividades</span>
+    <div class="wrap">
+      <div class="sec-head"><div><span class="eyebrow">Agenda</span><h2 class="h2" style="margin-bottom:0">Eventos</h2></div>
+        <div class="filters" id="evFilter" style="margin:0"><button class="on" data-f="all">Todos</button><button data-f="up">Próximos</button><button data-f="past">Pasados</button></div></div>
+      <div class="events" id="events"></div>
+    </div>
+  </section>
+</main>
+
+<!-- ================= CONTACTO ================= -->
+<main class="page" id="p-contacto">
+  <section class="phero has-pz"><span class="pz">Pieza · Slider imagen estático</span>
+    <img data-u="photo-1573164574572-cb89e39749b4" alt="Profesionales conversando">
+    <div class="wrap"><div class="crumb">Inicio <svg class="i"><use href="#chev"/></svg> Contáctanos</div>
+      <h1 class="rv">¿Tienes un reto tecnológico?</h1>
+      <p class="rv">Colabora con nuestros investigadores, licencia nuestra tecnología o lleva tu problema a un centro donde la ciencia se vuelve producto.</p></div>
+  </section>
+  <section class="sec has-pz"><span class="pz">Pieza · Contáctenos info + Formulario</span>
+    <div class="wrap contact">
+      <div class="rv"><span class="eyebrow">Hablemos</span><h2 class="h2">Cuéntanos tu reto</h2>
+        <p class="lead">Sea tu negocio una startup deep tech o una empresa consolidada, nuestro staff está dispuesto a escuchar tus ideas, discutir soluciones y proponer el mejor plan de acción para concretarlas.</p>
+        <div class="cinfo">
+          <div><span class="ico"><svg class="i"><use href="#phone"/></svg></span><p><b>04-2-269-269</b><span>Lunes a viernes</span></p></div>
+          <div><span class="ico"><svg class="i"><use href="#mail"/></svg></span><p><b>ctx@espol.edu.ec</b><span>Escríbenos tu consulta</span></p></div>
+          <div><span class="ico"><svg class="i"><use href="#pin"/></svg></span><p><b>Campus Gustavo Galindo, Edificio 1A</b><span>Km 30.5 Vía Perimetral, Guayaquil</span></p></div>
+        </div></div>
+      <form class="form rv" onsubmit="event.preventDefault();this.querySelector('button').textContent='Maqueta: el formulario no envía'">
+        <label>Nombres y apellidos<input autocomplete="name"></label>
+        <label>Correo electrónico<input type="email" autocomplete="email"></label>
+        <label>Teléfono<input type="tel" autocomplete="tel"></label>
+        <label>Asunto<select><option>Colaboración en proyecto</option><option>Licenciamiento de tecnología</option><option>Prensa</option><option>Otro</option></select></label>
+        <label class="full">Mensaje<textarea></textarea></label>
+        <button class="btn btn-accent full">Enviar mensaje <svg class="i"><use href="#arrow"/></svg></button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div><a href="#inicio" class="brand"><span class="brand-mark" style="background:#ffffff12"><svg viewBox="0 0 24 24" fill="none" stroke="#00a6e0" stroke-width="3" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></span><span class="brand-txt">CT-X<small style="color:#8fa0bd">Centro de Tecnologías · ESPOL</small></span></a>
+        <p style="margin-top:22px;max-width:340px;font-size:14.5px">El centro donde los datos, la ingeniería y la ciencia de ESPOL se cruzan para resolver retos reales.</p>
+        <div class="social"><a href="#" aria-label="X">𝕏</a><a href="#" aria-label="LinkedIn">in</a><a href="#" aria-label="YouTube">▶</a></div></div>
+      <div><h6>Centro</h6><ul><li><a href="#acerca">Acerca de</a></li><li><a href="#expertise">Expertise</a></li><li><a href="#casos">Casos de éxito</a></li></ul></div>
+      <div><h6>Explora</h6><ul><li><a href="#sectores">Sectores</a></li><li><a href="#eventos">Eventos y noticias</a></li><li><a href="https://i-research.espol.edu.ec/centro/cti" target="_blank" rel="noopener">i-research</a></li></ul></div>
+      <div><h6>Contacto</h6><ul><li>04-2-269-269</li><li>Campus Gustavo Galindo, Edificio 1A</li><li>Guayaquil, Ecuador</li></ul></div>
+    </div>
+    <div class="fbottom"><span>© ESPOL · CT-X</span><span>Maqueta de estructura · fotos de referencia de Unsplash</span></div>
+  </div>
+</footer>
+
+<button class="pz-toggle" onclick="document.body.classList.toggle('hide-pz');this.lastChild.textContent=document.body.classList.contains('hide-pz')?' Mostrar piezas':' Ocultar piezas'"><svg class="i"><use href="#eye"/></svg> Ocultar piezas</button>
+
+<script src="https://cdn.jsdelivr.net/npm/motion@11.11.13/dist/motion.js"></script>
+<script>
+const U=(id,w=1600)=>`https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=75`;
+const ico=n=>`<svg class="i"><use href="#${n}"/></svg>`;
+const $=s=>document.querySelector(s);
+
+/* ---------------- datos (Excel) ---------------- */
+const AREAS=[
+ {n:'Inteligencia Artificial',i:'brain',img:'photo-1461749280684-dccba630e2f6',h:'Máquinas que interpretan texto, imágenes y video.',d:'Máquinas que interpretan texto, imágenes y video. Utilizamos visión por computador y modelos de lenguaje para detectar, reconocer y comprender datos del mundo real.',t:[['Angel Sappa Ph.D.','Análisis de video y automatización industrial para entornos productivos.','6603014642'],['Boris Vintimilla Ph.D.','Modernización industrial, control de calidad automatizado y tecnología agrícola.','6507077933'],['Carmen Vaca Ph.D.','Puente estratégico entre la inteligencia artificial y la visión de negocios.','57201576771'],['Andrés Abad Ph.D.','Procesamiento inteligente de grandes volúmenes de datos para la industria.','55965684700']]},
+ {n:'Interacción Hombre-Máquina',i:'hand',img:'photo-1557825835-70d97c4aa567',h:'Creamos interfaces claras, eficientes y seguras que reducen errores operativos y garantizan una experiencia de usuario accesible.',d:'Diseñamos la forma en que las personas interactúan con la tecnología. Interfaces claras, eficientes y seguras que reducen errores operativos y garantizan una experiencia de usuario accesible.',t:[['Katherine Chiluiza Ph.D.','Comunicación entre personas y sistemas mediante analítica de datos.','55975399800'],['Vanessa Echeverría Ph.D.','Interfaces innovadoras y tableros interactivos para la toma de decisiones rápidas en entornos críticos.','56016639400'],['Federico Domínguez Ph.D.','Co-diseño y evaluación de interfaces digitales y tangibles.','8338734700']]},
+ {n:'Sistemas de Información',i:'db',img:'photo-1558494949-ef010cbdcc31',h:'Transformamos datos en información estratégica para decidir, controlar, planificar o mejorar procesos.',d:'Transformamos datos en información estratégica para decidir, controlar, planificar o mejorar procesos. Integramos hardware y software avanzado para procesar, compartir y proteger la información de su organización.',t:[['Carmen Vaca Ph.D.','Datos organizacionales complejos en información accionable para la toma de decisiones gerenciales.','57201576771'],['Cristina Abad Ph.D.','Plataformas empresariales rápidas, escalables y resilientes.','22957218500'],['Mónica Villavicencio Ph.D.','Metodologías ágiles y estándares de calidad para desarrollo de software.','54914547100'],['José Córdova Ph.D.','Arquitecturas de red robustas que aseguran que la información fluya de manera segura y eficiente.','57193746327']]},
+ {n:'Ingeniería Eléctrica y Electrónica',i:'bolt',img:'photo-1592659762303-90081d34b277',h:'Soluciones avanzadas para la generación, control y uso eficiente de la energía y las señales electrónicas.',d:'Soluciones avanzadas para la generación, control y uso eficiente de la energía y las señales electrónicas. Desarrollamos desde sistemas de potencia y redes de telecomunicaciones hasta microcontroladores y dispositivos digitales para la industria, las comunicaciones y la vida cotidiana.',t:[['Rebeca Estrada Ph.D.','Conectividad de baja latencia necesaria para la Industria 4.0.','58753754000'],['Douglas Plaza Ph.D.','Automatización para manufactura, robótica y el agro.','24829599200'],['Wilton Agila Ph.D.','Gestión inteligente de demanda eléctrica y energía fotovoltaica.','8905693300'],['Ricardo Cajo Ph.D.','Hardware embebido y Edge AI para maquinarias.','57148422200']]}
+];
+const SECT=[
+ {n:'Educación y aprendizaje digital',img:'photo-1515378960530-7c0da6231fb1',f:'Tecnologías inteligentes que enriquecen la enseñanza, personalizan el aprendizaje y fortalecen las competencias digitales.',
+  i:'Desarrollamos soluciones tecnológicas que contribuyen a mejorar los procesos de enseñanza y aprendizaje. Integramos inteligencia artificial, análisis de datos, tecnologías multimodales y herramientas digitales para crear experiencias educativas personalizadas, inclusivas y orientadas al éxito académico.',
+  apps:[['Evaluación de competencias lingüísticas mediante IA multimodal','Analizamos de manera integrada la voz, el lenguaje, los gestos y otros elementos de la comunicación, facilitando una evaluación más completa de las competencias lingüísticas.'],['Tecnologías inclusivas que eliminan barreras en el aula','Desarrollamos soluciones tecnológicas que facilitan el acceso a los contenidos educativos y promueven la participación de estudiantes con distintas necesidades.'],['Predicción de rutas de aprendizaje y rendimiento académico','Analizamos datos académicos para anticipar necesidades y recomendar rutas de aprendizaje que contribuyan a mejorar el desempeño de cada estudiante.']],
+  p:'CTI-004-2025 — Evaluación de la competencia lingüística en inglés como segunda lengua a través de tecnologías de inteligencia artificial multimodal'},
+ {n:'Agricultura y acuicultura inteligente',img:'photo-1627920769541-daa658ed6b59',f:'IA, sensores, drones y análisis de datos para una producción agrícola y acuícola más eficiente, sostenible y resiliente.',
+  i:'Desarrollamos soluciones tecnológicas para monitorear, analizar y optimizar los procesos agrícolas y acuícolas. Integramos inteligencia artificial, sensores, drones, visión por computador, robótica y análisis predictivo para apoyar la toma de decisiones, utilizar eficientemente los recursos y fortalecer la sostenibilidad de la producción.',
+  apps:[['Monitoreo inteligente de cultivos con sensores y drones','Integramos drones, sensores y análisis de datos para observar el estado de los cultivos, detectar variaciones y apoyar decisiones agrícolas oportunas.'],['Visión artificial para evaluar y estimar la productividad','Aplicamos visión artificial y aprendizaje profundo para analizar imágenes de los cultivos, reconocer características relevantes y generar estimaciones que apoyen la planificación de la producción.'],['Acuicultura basada en datos','Analizamos datos físico-químicos de las piscinas para conocer sus condiciones, anticipar riesgos y apoyar decisiones que mejoren la eficiencia de la producción de camarón.'],['Monitoreo inteligente de la calidad del agua y las piscinas','Monitoreamos las condiciones físico-químicas del agua para detectar variaciones, anticipar riesgos y mantener ambientes adecuados para la producción de camarón.']],
+  p:'CTI-001-2026 — Producción eficiente de camarón basado en el análisis de datos físico-químicos de piscinas'},
+ {n:'Industria y manufactura inteligente',img:'photo-1647427060118-4911c9821b82',f:'IA, automatización y análisis de datos para optimizar procesos, mejorar la calidad y aumentar la eficiencia industrial.',
+  i:'Desarrollamos soluciones tecnológicas para modernizar los procesos industriales y de manufactura. Aplicamos inteligencia artificial, visión por computador, sensores, robótica y análisis de datos para automatizar operaciones, detectar fallas, fortalecer el control de calidad y apoyar decisiones productivas.',
+  apps:[['Visión artificial para detectar defectos y asegurar la calidad','Aplicamos visión artificial para inspeccionar piezas industriales, detectar defectos automáticamente y fortalecer el control de calidad durante la producción.'],['Inspección automatizada para control de calidad','Automatizamos la inspección de piezas industriales para identificar fallas oportunamente, separar productos defectuosos y fortalecer el control de calidad.'],['Reconocimiento inteligente de patrones industriales','Aplicamos técnicas de aprendizaje automático para reconocer patrones, clasificar características y detectar anomalías en imágenes utilizadas en procesos industriales.'],['Inspección inteligente de productos avícolas','Aplicamos métodos automáticos para identificar alteraciones en productos avícolas y fortalecer los procesos de inspección y control de calidad en la agroindustria alimentaria.']],
+  p:'CIDIS-004-2023 — Automatización del proceso de detección de fallas en piezas de hojalata usando visión por computador'},
+ {n:'Salud digital',img:'photo-1576091160550-2173dba999ef',f:'Tecnologías digitales e IA para fortalecer la prevención, el diagnóstico y la formación de profesionales de la salud.',
+  i:'Desarrollamos y aplicamos soluciones digitales orientadas a la salud, la prevención y la formación médica. Nuestras capacidades incluyen telemedicina, simulación, inteligencia artificial, análisis de datos y monitoreo ambiental para apoyar el diagnóstico, evaluar riesgos sanitarios y mejorar la atención.',
+  apps:[['Telemedicina','Desarrollamos experiencias de simulación mediante telemedicina para fortalecer las competencias de diagnóstico y atención a distancia.'],['Detección de problemas del lenguaje','Aplicamos tecnologías inteligentes para analizar información y apoyar la identificación de dificultades relacionadas con el lenguaje.'],['Monitoreo ambiental para prevenir riesgos para la salud','Evaluamos la presencia de material particulado en espacios interiores para identificar riesgos sanitarios y contribuir a ambientes más saludables.']],
+  p:'CIP-RRD-001-2025 — RESPIRA: Evaluación del riesgo sanitario por material particulado atmosférico en espacios interiores universitarios'},
+ {n:'Medio ambiente y sostenibilidad',img:'photo-1560851691-ebb64b584d3d',f:'Tecnología e innovación para proteger el ambiente y construir un futuro sostenible.',
+  i:'Desarrollamos soluciones que integran inteligencia artificial, sensores, drones y análisis de datos para proteger los ecosistemas, gestionar los recursos naturales y fortalecer la resiliencia frente al cambio climático.',
+  apps:[['Monitoreo inteligente de la biodiversidad','Tecnologías que permiten identificar especies y observar la fauna de manera automatizada, contribuyendo a la conservación de los ecosistemas.'],['Monitoreo ecoambiental','Integración de tecnologías para recopilar y analizar información sobre las condiciones ambientales de espacios naturales y urbanos.'],['Resiliencia climática','Uso de información ambiental y herramientas tecnológicas para comprender los efectos del cambio climático y apoyar estrategias de adaptación.'],['Gestión hídrica sostenible','Soluciones orientadas al monitoreo y la gestión responsable del agua, con participación de comunidades, investigadores y actores locales.']],
+  p:'CIDIS-001-2024 — Monitoreo inteligente de fauna en hábitats naturales mediante deep learning y redes de sensores'},
+ {n:'Movilidad y ciudades inteligentes',img:'photo-1444723121867-7a241cacace9',f:'Tecnología y datos para una movilidad más segura, conectada y eficiente.',
+  i:'Desarrollamos soluciones que integran inteligencia artificial, robótica, posicionamiento y análisis de datos para mejorar la movilidad, la planificación urbana y la prestación de servicios en ciudades inteligentes.',
+  apps:[['Rutas urbanas más seguras y resilientes','El análisis de desplazamientos históricos permite evaluar vías de acceso y evacuación, anticipar problemas y apoyar la planificación urbana frente a eventos adversos.'],['Datos abiertos e IA para movilidad autónoma','La creación de conjuntos de datos especializados facilita el desarrollo y evaluación de sistemas de percepción para vehículos autónomos adaptados al entorno ecuatoriano.'],['Posicionamiento inteligente para servicios urbanos más conectados','Las tecnologías de localización y rastreo permiten conocer la posición de dispositivos y activos móviles, apoyando aplicaciones de transporte, logística y servicios urbanos.']],
+  p:'CTI-006-2024 — Modelo de posicionamiento basado en machine learning para detección de distancias'},
+ {n:'Telecomunicaciones, IoT y ciberseguridad',img:'photo-1655251128253-6612015fbcc9',f:'Conectividad inteligente y segura para un mundo cada vez más conectado.',
+  i:'Investigamos y desarrollamos tecnologías de telecomunicaciones, Internet de las Cosas y ciberseguridad para conectar dispositivos, administrar redes, proteger la información y crear servicios digitales confiables.',
+  apps:[['Redes móviles inteligentes','Desarrollo de tecnologías que permiten compartir y gestionar recursos de comunicación entre diferentes tipos de redes móviles para una conectividad más eficiente.'],['Ciberseguridad y redes IoT','Sistemas que monitorean dispositivos conectados y utilizan modelos predictivos para detectar anomalías y posibles ataques de seguridad.'],['Posicionamiento y rastreo con redes de comunicación abiertas','Tecnologías de localización que permiten determinar y seguir la posición de dispositivos móviles utilizando infraestructura de red de código abierto.'],['Formación práctica en Internet de las Cosas','Recursos educativos abiertos que facilitan el aprendizaje de sensores, dispositivos conectados, comunicaciones y aplicaciones IoT.']],
+  p:'CTI-004-2023 — Diseño de un sistema de posicionamiento y rastreo de dispositivos móviles usando una infraestructura de red open source'},
+ {n:'Robótica y sistemas autónomos',img:'photo-1485827404703-89b55fcc595e',f:'Robótica e inteligencia para sistemas que perciben, deciden y actúan.',
+  i:'Desarrollamos soluciones que integran robótica, inteligencia artificial, sensores y visión por computadora para crear sistemas capaces de percibir su entorno, tomar decisiones y ejecutar tareas con mayor autonomía.',
+  apps:[['Navegación autónoma en entornos dinámicos','Desarrollo de robots móviles capaces de reconocer obstáculos, planificar recorridos y desplazarse de manera segura en espacios compartidos.'],['Drones inteligentes para monitoreo de territorios e infraestructuras','Los vehículos aéreos no tripulados permiten capturar información desde el aire y apoyar el monitoreo de áreas naturales, productivas e infraestructuras.'],['Robótica y teledetección para monitoreo agrícola','Integración de robots, drones y sensores para observar los cultivos, recopilar información y apoyar decisiones agrícolas más precisas.'],['Datos y sensores para el desarrollo de vehículos autónomos','Creación de datos especializados para entrenar y evaluar sistemas de percepción que permitan a los vehículos reconocer su entorno.']],
+  p:'CIDIS-002-2023 — Navegación autónoma de plataformas robóticas móviles de servicio en ambientes dinámicos'},
+ {n:'Gobierno, justicia y gestión de riesgos',img:'photo-1589994965851-a8f479c573a9',f:'Tecnología y datos para decisiones informadas y una gestión anticipada de los riesgos.',
+  i:'Desarrollamos soluciones que integran inteligencia artificial, modelación y análisis de datos para apoyar la justicia, fortalecer la planificación institucional y anticipar riesgos que afectan a las personas, los territorios y la infraestructura.',
+  apps:[['IA en las decisiones judiciales','Aplicación de modelos predictivos para estudiar información de litigios e identificar factores relacionados con las decisiones judiciales. La tecnología funciona como apoyo para el análisis y no sustituye el criterio de los profesionales del derecho.'],['Rutas de evacuación y respuesta','El análisis de desplazamientos históricos permite modelar el efecto de eventos adversos sobre las vías de acceso y evacuación, apoyando la preparación ante emergencias.'],['Adaptación al cambio climático','Herramientas para identificar riesgos, evaluar sectores vulnerables y priorizar medidas de adaptación en ámbitos como salud, asentamientos humanos, patrimonio natural e infraestructura vial.'],['Decisiones colectivas e institucionales','Sistemas inteligentes que permiten analizar alternativas, integrar criterios de diferentes participantes y facilitar procesos de decisión grupal basados en información.']],
+  p:'CTD-001-2025 — Predicción de fallos de jueces en litigios legales'},
+ {n:'Servicios empresariales y transformación digital',img:'photo-1551288049-bebda4e38f71',f:'Soluciones digitales que convierten los datos y la tecnología en mejores procesos y decisiones.',
+  i:'Desarrollamos soluciones basadas en inteligencia artificial, computación en la nube y análisis de datos para apoyar la transformación digital, optimizar procesos y fortalecer la toma de decisiones en las organizaciones.',
+  apps:[['Decisiones empresariales más informadas','Herramientas que analizan información, comparan alternativas y apoyan a los equipos en la selección de soluciones para problemas organizacionales complejos.'],['Computación en la nube','Infraestructuras y arquitecturas en la nube que permiten desarrollar servicios digitales con mayor capacidad de procesamiento, disponibilidad y adaptación al crecimiento de las organizaciones.'],['Aprendizaje automático accesible','Plataformas que facilitan el uso de machine learning y permiten experimentar con datos, desarrollar modelos y crear soluciones digitales en diferentes campos.']],
+  p:'FIEC-002-2025 — Next Generation Cloud Computing Systems: Design, Implementation, Evaluation and Education'}
+];
+const CASOS=[
+ {t:'Control de calidad con visión computacional',s:'Envases Litoral S.A.',sec:'Industria',img:'photo-1717386255773-1e3037c81788',d:'Detectar de forma precisa y automatizada fallas en tapas de hojalata directamente en la línea de producción, en un entorno rápido y dinámico.',so:'Prototipo de hardware y software de visión por computador con iluminación calibrada, mapeo de representación polar y extracción de regiones de interés a alta velocidad.',r:'Detección de fallas automatizada en planta, manteniendo intacta la velocidad de la línea y la calidad de cada pieza.'},
+ {t:'Monitoreo inteligente en cultivos bananeros',s:'Agrosoft S.A.',sec:'Agricultura',img:'photo-1653481006616-aab561a77a3b',d:'Eliminar las inspecciones manuales y leer automáticamente las cintas de maduración de los racimos, con luz y clima muy variables.',so:'Visión artificial con cámaras 3D, una extensa base de datos de cintas y algoritmos de IA en tiempo real sobre hardware de bajo costo.',r:'Validación en campo y prototipos aprobados: un nuevo estándar de Agricultura 4.0 para el sector ecuatoriano.'},
+ {t:'Movilidad inteligente ante desastres',s:'Technology Equinoccial · GAD Durán',sec:'Gestión de riesgos',img:'photo-1547683905-f686c993aae5',d:'Pasar de una gestión de crisis reactiva a una predictiva ante el bloqueo de vías de evacuación en el cantón Durán.',so:'Mapeo de infraestructura crítica, una herramienta predictiva que simula escenarios de desastre y validación exhaustiva de su precisión.',r:'Las autoridades deciden en tiempo real, optimizan rutas de evacuación y despliegan la logística de forma segura.'}
+];
+const VALS=[['users','Co-investigación','Investigadores de áreas distintas resolviendo problemas juntos.'],['target','Impacto aplicado','Cerramos la brecha entre el resultado científico y su uso real.'],['link','Articulación','Academia, industria y Estado colaborando en retos comunes.'],['award','Excelencia científica','Más de 100 publicaciones respaldan cada proyecto.'],['layers','Interdisciplinariedad','Ciencia computacional aplicada a campos diversos.']];
+const EV=[
+ ['Investigadores del CIDIS en CVPR 2026','Seis artículos científicos en visión por computador e inteligencia artificial.','JUN','2026','past','photo-1540575467063-178a50c2df87'],
+ ['CIDIS en The Computer Vision Conference 2026','Registro de imágenes RGB y térmicas en condiciones de neblina.','MAY','2026','past','photo-1627931539006-d5c4677e05ea'],
+ ['El robot “Walter” en AeroTech Summit 2025','Robótica e investigación aplicada presentadas al público.','NOV','2025','past','photo-1527430253228-e93688616381'],
+ ['Walter en Lab Connect','ESPOL FIEC abrió sus laboratorios y proyectos.','OCT','2025','past','photo-1581093577421-f561a654a353'],
+ ['Pares o Nones','Investigadores presentan los resultados de sus proyectos.','DIC','2026','up'],
+ ['Charlas I+D+i','Difusión de investigaciones en ingeniería, tecnología e innovación.','NOV','2026','up'],
+ ['Proyecto Loly Midi','Intercambio para impulsar nuevas iniciativas de investigación.','NOV','2026','up'],
+ ['Visita técnica: Arte y Tecnología · Acuicultura','Recorrido por la infraestructura tecnológica del centro.','SEP','2025','past']
+];
+
+/* ---------------- render ---------------- */
+document.querySelectorAll('img[data-u]').forEach(i=>{i.src=U(i.dataset.u, i.closest('.hero,.phero,.grow')?2000:1200);});
+
+$('#homeAreas').innerHTML=AREAS.map((a,i)=>`<a href="#expertise" class="area rv" data-goarea="${i}"><span class="num">0${i+1}</span><span class="ico">${ico(a.i)}</span><h4>${a.n}</h4><p>${a.h}</p><span class="link">Conocer más ${ico('arrow')}</span></a>`).join('');
+
+const slist=$('#slist'),sview=$('#sview');
+const HS=SECT.slice(0,6);
+slist.innerHTML=HS.map((s,i)=>`<button data-i="${i}">${s.n}${ico('arrow')}</button>`).join('');
+sview.insertAdjacentHTML('afterbegin',HS.map(s=>`<img src="${U(s.img,1200)}" alt="${s.n}">`).join(''));
+function pickSector(i){
+  slist.querySelectorAll('button').forEach((b,j)=>b.classList.toggle('on',j==i));
+  sview.querySelectorAll('img').forEach((m,j)=>m.classList.toggle('on',j==i));
+  $('#sKicker').textContent=HS[i].n;$('#sText').textContent=HS[i].f;
+}
+slist.querySelectorAll('button').forEach(b=>{b.addEventListener('mouseenter',()=>pickSector(+b.dataset.i));b.addEventListener('click',()=>pickSector(+b.dataset.i))});
+pickSector(0);
+
+const caseCard=(c,i)=>`<a href="#casos" class="pcard rv" data-gocase="${i}"><div class="ph"><img src="${U(c.img,900)}" alt="${c.t}"><span class="tag">${c.sec}</span></div><div class="body"><span class="meta">${c.s}</span><h4>${c.t}</h4><p>${c.r}</p><span class="link">Ver caso ${ico('arrow')}</span></div></a>`;
+$('#homeCases').innerHTML=CASOS.map(caseCard).join('');
+const newsCard=e=>`<article class="pcard ncard rv"><div class="ph"><img src="${U(e[5],800)}" alt=""></div><div class="body"><span class="date">${ico('cal')}${e[2]} ${e[3]}</span><h4>${e[0]}</h4><p>${e[1]}</p></div></article>`;
+$('#homeNews').innerHTML=EV.filter(e=>e[5]).map(newsCard).join('');
+$('#evNews').innerHTML=EV.filter(e=>e[5]).map(newsCard).join('');
+
+document.querySelectorAll('[data-cta]').forEach(w=>w.innerHTML=`<div class="cta rv"><div class="cta-bg"><img src="${U(w.dataset.cta,1800)}" alt=""></div><div class="cta-in"><span class="eyebrow">Colabora con CT-X</span><h2 style="margin-top:18px">¿Tienes un reto tecnológico?</h2><p>Colabora con nuestros investigadores, licencia nuestra tecnología o lleva tu problema a un centro donde la ciencia se vuelve producto.</p><div class="row"><a href="#contacto" class="btn btn-accent">Contáctanos ${ico('arrow')}</a><span class="phone">${ico('phone')}04-2-269-269</span></div></div></div>`);
+
+$('#allSectors').innerHTML=SECT.map((s,i)=>`<a href="#sectorDetail" class="pcard rv" data-s="${i}"><div class="ph"><img src="${U(s.img,900)}" alt="${s.n}"><span class="tag">Sector ${String(i+1).padStart(2,'0')}</span></div><div class="body"><h4>${s.n}</h4><p>${s.f}</p><span class="link">Ver aplicaciones ${ico('arrow')}</span></div></a>`).join('');
+/* transiciones al cambiar de tarjeta / pestaña */
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const SOFT='cubic-bezier(.22,1,.36,1)';
+function swapImg(img,src,alt){
+  if(img.dataset.cur===src) return; img.dataset.cur=src;
+  const pre=new Image();
+  pre.onload=()=>{img.src=src;img.alt=alt||'';
+    if(!RM) img.animate([{opacity:0,transform:'scale(1.08)',filter:'blur(10px)'},{opacity:1,transform:'scale(1)',filter:'blur(0px)'}],{duration:900,easing:SOFT});};
+  pre.src=src;
+}
+function enter(els,dy=18){
+  if(RM) return;
+  [...els].forEach((el,k)=>el.animate([{opacity:0,transform:`translateY(${dy}px)`},{opacity:1,transform:'translateY(0)'}],{duration:650,delay:k*70,easing:SOFT,fill:'backwards'}));
+}
+function showSector(i){const s=SECT[i];$('#sdTitle').textContent=s.n;$('#sdLead').textContent=s.i;$('#sdProj').textContent=s.p;swapImg($('#sdImg'),U(s.img,1200),s.n);
+  $('#sdAcc').innerHTML=s.apps.map((a,j)=>`<details ${j?'':'open'}><summary>${a[0]}<span class="pm">${ico('plus')}</span></summary><p>${a[1]}</p></details>`).join('');
+  enter([$('#sdTitle'),$('#sdLead'),...document.querySelectorAll('#sdAcc details'),$('#sdProj')]);}
+document.querySelectorAll('[data-s]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();showSector(+a.dataset.s);$('#sectorDetail').scrollIntoView({behavior:'smooth'})}));
+showSector(1);
+
+$('#areaTabs').innerHTML=AREAS.map((a,i)=>`<button data-a="${i}">${a.n}</button>`).join('');
+function showArea(i){const a=AREAS[i];
+  document.querySelectorAll('[data-a]').forEach((b,j)=>b.classList.toggle('on',j==i));
+  $('#aNum').textContent='Área 0'+(i+1);$('#aTitle').textContent=a.n;$('#aDesc').textContent=a.d;swapImg($('#aImg'),U(a.img,1200),a.n);
+  $('#team').innerHTML=a.t.map(m=>`<div class="person"><div class="av"><img src="fotos/${m[2]}.jpg" alt="${m[0]}" onerror="this.remove()"><svg class="i"><use href="#user"/></svg></div><div class="b"><h5>${m[0]}</h5><p>${m[1]}</p><a class="link" href="https://i-research.espol.edu.ec/investigador/${m[2]}" target="_blank" rel="noopener">Ver perfil ${ico('arrow')}</a></div></div>`).join('');
+  enter([$('#aNum'),$('#aTitle'),$('#aDesc')]);enter(document.querySelectorAll('#team .person'),26);
+}
+document.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>showArea(+b.dataset.a));
+
+$('#caseTabs').innerHTML=CASOS.map((c,i)=>`<button data-c="${i}"><small>Caso 0${i+1} · ${c.sec}</small><span>${c.t}</span></button>`).join('');
+function showCase(i){const c=CASOS[i];
+  document.querySelectorAll('[data-c]').forEach((b,j)=>b.classList.toggle('on',j==i));
+  swapImg($('#caseImg'),U(c.img,2000),c.t);
+  $('#caseDSR').innerHTML=`<div><span class="ico">${ico('target')}</span><h5>El desafío</h5><p>${c.d}</p></div><div><span class="ico">${ico('cog')}</span><h5>Nuestra solución</h5><p>${c.so}</p></div><div><span class="ico">${ico('trend')}</span><h5>El resultado</h5><p>${c.r}</p><p style="margin-top:16px;font-weight:600;color:#fff">${c.s}</p></div>`;
+  enter(document.querySelectorAll('#caseDSR>div'),26);
+}
+document.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>showCase(+b.dataset.c));
+
+$('#vals').innerHTML=VALS.map(v=>`<div class="val rv"><span class="ico">${ico(v[0])}</span><h5>${v[1]}</h5><p>${v[2]}</p></div>`).join('');
+
+function showEv(f){$('#events').innerHTML=EV.filter(e=>f=='all'||e[4]==f).map(e=>`<div class="ev"><div class="d"><b>${e[2]}</b><span>${e[3]}</span></div><div><h5>${e[0]}</h5><p>${e[1]}</p></div><span class="pill ${e[4]}">${e[4]=='up'?'Próximo · Presencial':'Realizado · Presencial'}</span></div>`).join('');
+  enter(document.querySelectorAll('#events .ev'),14);}
+document.querySelectorAll('#evFilter button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#evFilter button').forEach(x=>x.classList.toggle('on',x==b));showEv(b.dataset.f)});
+showEv('all');
+
+/* ---------------- animaciones (Motion) ---------------- */
+var M=window.Motion; var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(!M||reduce) document.body.classList.add('no-motion');
+showArea(0);showCase(0);
+const EASE=[.22,1,.36,1];
+let stops=[];
+function animatePage(page){
+  stops.forEach(s=>{try{s&&s()}catch(_){}});stops=[];
+  if(!M||reduce) return;
+  const rv=page.querySelectorAll('.rv');
+  rv.forEach(el=>el.classList.remove('in'));
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{rootMargin:'0px 0px -8% 0px'});
+  rv.forEach(el=>io.observe(el));
+  stops.push(()=>io.disconnect());
+  const ph=page.querySelector('.phero img');
+  if(ph) M.animate(ph,{transform:['scale(1.12)','scale(1)']},{duration:1.6,easing:EASE});
+  if(page.id=='p-inicio'){
+    M.animate('#heroTitle .ln>span',{transform:['translateY(105%)','translateY(0%)']},{delay:M.stagger(.12,{start:.1}),duration:1,easing:EASE});
+    M.animate('.hero-sub',{opacity:[0,1],transform:['translateY(20px)','translateY(0px)']},{delay:M.stagger(.12,{start:.55}),duration:.9,easing:EASE});
+    stops.push(M.scroll(M.animate('#heroImg',{transform:['scale(1.15) translateY(0%)','scale(1.15) translateY(12%)']},{easing:'linear'}),{target:$('.hero'),offset:['start start','end start']}));
+    stops.push(M.inView('.stats',()=>{document.querySelectorAll('[data-count]').forEach(b=>{const n=+b.dataset.count;M.animate(0,n,{duration:1.8,easing:EASE,onUpdate:v=>b.textContent=Math.round(v).toLocaleString('es')})})}));
+  }
+}
+
+/* ---------------- router ---------------- */
+const pages={inicio:'p-inicio',sectores:'p-sectores',expertise:'p-expertise',casos:'p-casos',acerca:'p-acerca',eventos:'p-eventos',contacto:'p-contacto'};
+let current=null;
+function route(forced){
+  const h=(typeof forced=='string'&&forced)||location.hash.slice(1)||'inicio';
+  if(!pages[h]||current===h) return; current=h;
+  document.querySelectorAll('.page').forEach(p=>p.classList.toggle('on',p.id==pages[h]));
+  document.querySelectorAll('.menu a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')=='#'+h&&!a.classList.contains('btn')));
+  $('#menu').classList.remove('open');
+  window.scrollTo(0,0);
+  animatePage(document.getElementById(pages[h]));
+}
+document.addEventListener('click',e=>{
+  const a=e.target.closest('a[href^="#"]');if(!a)return;
+  const h=a.getAttribute('href').slice(1);
+  if(a.dataset.goarea) showArea(+a.dataset.goarea);
+  if(a.dataset.gocase) showCase(+a.dataset.gocase);
+  if(pages[h]){e.preventDefault();try{history.replaceState(null,'','#'+h)}catch(_){}route(h);}
+});
+addEventListener('hashchange',()=>route());
+route();
+</script>
+</body>
+</html>
